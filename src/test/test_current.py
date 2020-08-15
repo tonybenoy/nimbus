@@ -2,9 +2,8 @@ import contextlib
 from io import StringIO
 
 import alembic
-from sqlalchemy.orm import Session
-
 from alembic.command import current as alembic_current
+from sqlalchemy.orm import Session
 
 from nimbus.exceptions import *
 from nimbus.models import (
@@ -21,37 +20,22 @@ def test_current(getAlembic: alembic.config.Config) -> None:
     assert stdout.getvalue() == ""
 
 
-def test_user2(session: Session) -> None:
-    u = User(
-        performed_by=123, user_id=101, name="dfd", fullname="dfdf", nickname="dfdd", email="asas",
-    )
-    session.add(u)
-    session.commit()
-    a = session.query(User).first()
-    u = UserPy(
-        id=a.id,
-        performed_by=123,
-        email="me@tonybeoy.com",
-        user_id=101,
-        name="dfd",
-        fullname="dfdf",
-        nickname="dfdd",
-    )
-
-
 def test_user(session: Session) -> None:
-    u = User(
-        performed_by=123, user_id=101, name="dfd", fullname="dfdf", nickname="dfdd", email="asas",
+    u = User.new(
+        session=session,
+        performed_by=1,
+        user_id=1,
+        first_name="tony",
+        last_name="benoy",
+        email="me@tonybenoy.com",
     )
-    session.add(u)
     session.commit()
     a = session.query(User).first()
     u = UserPy(
         id=a.id,
-        performed_by=123,
-        email="me@tonybenoy.com",
-        user_id=101,
-        name="dfd",
-        fullname="dfdf",
-        nickname="dfdd",
+        performed_by=a.performed_by,
+        email=a.email,
+        user_id=a.user_id,
+        first_name=a.first_name,
+        last_name=a.last_name,
     )

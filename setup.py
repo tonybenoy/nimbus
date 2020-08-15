@@ -42,6 +42,7 @@ setup(
         "gunicorn",
         "starlette",
         "httpx",
+        "email_validator",
     ],
     extras_require={"dev": DEV_REQUIRES},
     include_package_data=True,

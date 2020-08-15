@@ -1,8 +1,15 @@
+from datetime import datetime
+from typing import (
+    Any,
+    Dict,
+)
+
 import pendulum
 from pendulum import DateTime
 from pydantic import EmailStr
 from pydantic.dataclasses import dataclass as py_dataclass
 from sqlalchemy import (
+    JSON,
     TIMESTAMP,
     Column,
     Integer,
@@ -21,9 +28,10 @@ def get_current_ist_time():
 class AuditMixin(Base):
     __abstract__ = True
     id = Column(Integer, primary_key=True)
-    created_at = Column(TIMESTAMP, default=get_current_ist_time(), nullable=False)
-    updated_at = Column(TIMESTAMP, default=get_current_ist_time(), nullable=False)
+    created_at = Column(TIMESTAMP, default=get_current_ist_time(), nullable=True)
+    updated_at = Column(TIMESTAMP, default=get_current_ist_time(), nullable=True)
     performed_by = Column(Integer, default=666, nullable=True)
+    row_status = Column(String(50), nullable=False)
 
     @classmethod
     def snapshot(
@@ -54,6 +62,26 @@ class AuditMixin(Base):
         session.flush()
         return new_obj
 
+    @classmethod
+    def new(cls, session: Session, **kwargs) -> Any:
+        kwargs.update({"row_status": "active"})
+        obj = cls(**kwargs)
+        session.add(obj)
+        return obj
+
+    def as_dict(self):
+        d = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        return d
+
+    def as_dict_for_json(self):
+        d = {
+            c.name: getattr(self, c.name).isoformat()
+            if isinstance(getattr(self, c.name), datetime)
+            else getattr(self, c.name)
+            for c in self.__table__.columns
+        }
+        return d
+
 
 def get_or_create(session, model, defaults=None, **kwargs):
     instance = session.query(model).filter_by(**kwargs).first()
@@ -71,7 +99,7 @@ def get_or_create(session, model, defaults=None, **kwargs):
 class User(AuditMixin):
     __tablename__ = "users"
     user_id = Column(Integer, primary_key=True)
-    name = Column(String(50))
+    extra_details = Column(JSON, server_default="{}", nullable=True)
     email = Column(String(100))
     first_name = Column(String(50))
     last_name = Column(String(50))
@@ -88,8 +116,8 @@ class AuditMixinPy:
 
 @py_dataclass
 class UserPy(AuditMixinPy):
-    user_id: str
+    user_id: int
     name: str
     email: EmailStr
-    fullname: str
-    nickname: str
+    first_name: str
+    last_name: str
