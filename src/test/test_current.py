@@ -20,7 +20,7 @@ def test_current(getAlembic: alembic.config.Config) -> None:
 
 
 def test_user(session: Session) -> None:
-    u = User.new(
+    User.new(
         session=session,
         performed_by=1,
         user_id=1,
@@ -30,7 +30,7 @@ def test_user(session: Session) -> None:
     )
     session.commit()
     a = session.query(User).first()
-    u = UserPy(
+    UserPy(
         id=a.id,
         performed_by=a.performed_by,
         email=a.email,

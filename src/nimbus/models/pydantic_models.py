@@ -21,3 +21,22 @@ class UserPy(AuditMixinPy):
     first_name: str
     last_name: str
     extra_details: Dict
+
+
+@py_dataclass
+class UserMasterPy(AuditMixinPy):
+    user_id: int
+    mobile: str
+
+
+class ProductsPy(AuditMixinPy):
+    item_id: int
+    item_name: str
+    item_description: dict
+    measure: str
+
+
+class MerchantPy(AuditMixinPy):
+    merchant_id: int
+    email: str
+    extra_details: Dict
