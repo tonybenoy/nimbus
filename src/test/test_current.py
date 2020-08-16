@@ -6,8 +6,8 @@ from alembic.command import current as alembic_current
 from sqlalchemy.orm import Session
 
 from nimbus.exceptions import *
-from nimbus.models import User
-from nimbus.pydantic_models import UserPy
+from nimbus.models.models import User
+from nimbus.models.pydantic_models import UserPy
 from nimbus.utils import get_current_ist_time
 
 
