@@ -45,3 +45,27 @@ class MerchantProduct(AuditMixin):
     product_id = Column(Integer)
     status = Column(String(50))
     price = Column(DECIMAL)
+
+
+class Order(AuditMixin):
+    __tablename__ = "order"
+    order_id = Column(Integer)
+    merchant_id = Column(Integer)
+    user_id = Column(Integer)
+    status = Column(String(50))
+    total = Column(DECIMAL)
+    tax = Column(DECIMAL)
+    gross = Column(DECIMAL)
+    discount = Column(DECIMAL)
+    extra_details = Column(JSON, server_default="{}", nullable=True)
+
+
+class OrderLines(AuditMixin):
+    __tablename__ = ("order_lines",)
+    order_id = Column(Integer)
+    product_id = Column(Integer)
+    quantity = Column(DECIMAL)
+    status = Column(String(50))
+    discount = Column(DECIMAL)
+    price = Column(DECIMAL)
+    extra_details = Column(JSON, server_default="{}", nullable=True)
