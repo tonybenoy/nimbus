@@ -39,6 +39,7 @@ setup(
         "pytest-cov",
         "fastapi",
         "gunicorn",
+        "uvicorn",
         "starlette",
         "httpx",
         "email_validator",
