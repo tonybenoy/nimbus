@@ -6,10 +6,9 @@ from alembic.command import current as alembic_current
 from sqlalchemy.orm import Session
 
 from nimbus.exceptions import *
-from nimbus.models import (
-    User,
-    UserPy,
-)
+from nimbus.models import User
+from nimbus.pydantic_models import UserPy
+from nimbus.utils import get_current_ist_time
 
 
 def test_current(getAlembic: alembic.config.Config) -> None:
@@ -38,4 +37,7 @@ def test_user(session: Session) -> None:
         user_id=a.user_id,
         first_name=a.first_name,
         last_name=a.last_name,
+        updated_at=a.updated_at,
+        created_at=a.created_at,
+        extra_details=a.extra_details,
     )

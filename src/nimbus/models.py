@@ -1,13 +1,6 @@
 from datetime import datetime
-from typing import (
-    Any,
-    Dict,
-)
+from typing import Any
 
-import pendulum
-from pendulum import DateTime
-from pydantic import EmailStr
-from pydantic.dataclasses import dataclass as py_dataclass
 from sqlalchemy import (
     JSON,
     TIMESTAMP,
@@ -18,11 +11,9 @@ from sqlalchemy import (
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 
+from nimbus.utils import get_current_ist_time
+
 Base = declarative_base()
-
-
-def get_current_ist_time():
-    return pendulum.now("Asia/Kolkata").replace(tzinfo=None)
 
 
 class AuditMixin(Base):
@@ -65,8 +56,15 @@ class AuditMixin(Base):
     @classmethod
     def new(cls, session: Session, **kwargs) -> Any:
         kwargs.update({"row_status": "active"})
+        if "created_at" not in kwargs.keys():
+            kwargs.update({"created_at": get_current_ist_time()})
+        if "updated_at" not in kwargs.keys():
+            kwargs.update({"updated_at": get_current_ist_time()})
+        if "performed_by" not in kwargs.keys():
+            kwargs.update({"performed_by": 666})
         obj = cls(**kwargs)
         session.add(obj)
+
         return obj
 
     def as_dict(self):
@@ -103,21 +101,3 @@ class User(AuditMixin):
     email = Column(String(100))
     first_name = Column(String(50))
     last_name = Column(String(50))
-
-
-@py_dataclass
-class AuditMixinPy:
-    id: int
-    performed_by: int
-    created_at: DateTime
-    updated_at: DateTime
-    performed_by: int
-
-
-@py_dataclass
-class UserPy(AuditMixinPy):
-    user_id: int
-    name: str
-    email: EmailStr
-    first_name: str
-    last_name: str
