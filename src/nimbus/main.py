@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 
+from nimbus.views import base
+
 app = FastAPI()
 
 
-@app.get("/")
-async def root():
-    return {"result": "success", "message": "Api is up!"}
+app.include_router(base)
