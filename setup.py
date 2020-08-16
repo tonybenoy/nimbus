@@ -19,7 +19,6 @@ setup(
     version="0.1",
     author="Tony Benoy",
     author_email="me@tonybenoy.com",
-    license="MIT",
     description="Setup for Nimbus Backend",
     python_requires=">=3.8",
     packages=find_packages("src"),

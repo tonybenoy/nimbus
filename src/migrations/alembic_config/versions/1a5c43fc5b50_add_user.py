@@ -84,4 +84,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    pass
+    op.drop_table("users")
+    op.drop_table("user_master")
+    op.drop_table("products")
+    op.drop_table("merchant")
