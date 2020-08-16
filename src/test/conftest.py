@@ -11,7 +11,6 @@ from typing import (
 )
 
 import alembic
-import docker
 import psycopg2
 import pytest
 import sqlalchemy
@@ -25,6 +24,8 @@ from parse import (
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker
+
+import docker
 
 REPO_ROOT = Path(os.path.abspath(os.path.dirname(__file__))).parent.parent.resolve()
 
