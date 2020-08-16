@@ -17,7 +17,6 @@
 
 - make sure you are using python > 3.8+
 - setup virtualenv using`virtualenv env` and activate it
-- run`pip install -e .` to install dependencies. Update setup
-- rerun`pip install -e .` if you make changes to models/source code. not needed for testcase changes
+- run`pip install -e .` to install dependencies and setup new added dependencies
 - run`black . && isort . && pytest --mypy --black --isort --cov=nimbus --cov-report=xml --cov-report=term` to run your tests
 - all source code is under`src/nimbus/`.
