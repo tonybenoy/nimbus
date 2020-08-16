@@ -20,3 +20,8 @@
 - run`pip install -e .` to install dependencies and setup new added dependencies
 - run`black . && isort . && pytest --mypy --black --isort --cov=nimbus --cov-report=xml --cov-report=term` to run your tests
 - all source code is under`src/nimbus/`.
+
+
+# To run server on docker file
+`docker build -t nimbus   .`
+`docker run -it -p 4000:4000 nimbus`
