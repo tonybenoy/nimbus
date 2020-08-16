@@ -40,3 +40,25 @@ class MerchantProduct(AuditMixinPy):
     product_id: int
     status: str
     price: Decimal
+
+
+class OrderPy(AuditMixinPy):
+    order_id: int
+    merchant_id: int
+    user_id: int
+    status: str
+    total: Decimal
+    tax: Decimal
+    gross: Decimal
+    discount: Decimal
+    extra_details: Dict
+
+
+class OrderLinesPy(AuditMixinPy):
+    order_id: int
+    product_id: int
+    quantity: Decimal
+    status: str
+    discount: Decimal
+    price: Decimal
+    extra_details: Dict
