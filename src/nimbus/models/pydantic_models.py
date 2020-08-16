@@ -21,6 +21,7 @@ class UserMasterPy(AuditMixinPy):
     user_id: int
     mobile: str
 
+
 @py_dataclass
 class ProductsPy(AuditMixinPy):
     item_id: int
@@ -28,11 +29,13 @@ class ProductsPy(AuditMixinPy):
     item_description: dict
     measure: str
 
+
 @py_dataclass
 class MerchantPy(AuditMixinPy):
     merchant_id: int
     email: str
     extra_details: Dict
+
 
 @py_dataclass
 class MerchantProduct(AuditMixinPy):
@@ -40,6 +43,7 @@ class MerchantProduct(AuditMixinPy):
     product_id: int
     status: str
     price: Decimal
+
 
 @py_dataclass
 class OrderPy(AuditMixinPy):
@@ -52,6 +56,7 @@ class OrderPy(AuditMixinPy):
     gross: Decimal
     discount: Decimal
     extra_details: Dict
+
 
 @py_dataclass
 class OrderLinesPy(AuditMixinPy):
