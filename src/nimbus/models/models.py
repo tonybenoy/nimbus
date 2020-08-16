@@ -1,4 +1,5 @@
 from sqlalchemy import (
+    DECIMAL,
     JSON,
     Column,
     Integer,
@@ -36,3 +37,11 @@ class Merchant(AuditMixin):
     merchant_id = Column(Integer, primary_key=True)
     email = Column(String(50))
     extra_details = Column(JSON, server_default="{}", nullable=True)
+
+
+class MerchantProduct(AuditMixin):
+    __tablename__ = "merchant_product"
+    merchant_id = Column(Integer)
+    product_id = Column(Integer)
+    status = Column(String(50))
+    price = Column(DECIMAL)

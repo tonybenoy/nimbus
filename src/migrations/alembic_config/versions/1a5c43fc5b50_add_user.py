@@ -82,9 +82,24 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
     )
 
+    op.create_table(
+        "merchant_product",
+        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("merchant_id", sa.Integer(), nullable=False),
+        sa.Column("product_id", sa.Integer(), nullable=False),
+        sa.Column("status", sa.String(), nullable=False),
+        sa.Column("price", sa.Numeric(), nullable=False),
+        sa.Column("created_at", sa.TIMESTAMP(), nullable=False),
+        sa.Column("updated_at", sa.TIMESTAMP(), nullable=False),
+        sa.Column("row_status", sa.String(), nullable=False),
+        sa.Column("performed_by", sa.Integer(), nullable=False),
+        sa.PrimaryKeyConstraint("id"),
+    )
+
 
 def downgrade() -> None:
     op.drop_table("users")
     op.drop_table("user_master")
     op.drop_table("products")
     op.drop_table("merchant")
+    op.drop_table("merchant_product")

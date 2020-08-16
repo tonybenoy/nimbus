@@ -1,3 +1,4 @@
+from decimal import Decimal
 from typing import Dict
 
 from pydantic import EmailStr
@@ -32,3 +33,10 @@ class MerchantPy(AuditMixinPy):
     merchant_id: int
     email: str
     extra_details: Dict
+
+
+class MerchantProduct(AuditMixinPy):
+    merchant_id: int
+    product_id: int
+    status: str
+    price: Decimal
