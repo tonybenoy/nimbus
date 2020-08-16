@@ -6,4 +6,4 @@ COPY . /app
 WORKDIR /app
 RUN pip install -e "."
 
-CMD ["uvicorn","src.nimbus.main:app","--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn","src.nimbus.main:app","--host", "0.0.0.0", "--port", "4000"]
