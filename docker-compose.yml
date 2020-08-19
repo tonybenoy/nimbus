@@ -1,0 +1,84 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: localhost:5000/tonybenoy/backend
+    environment:
+      - config_env=local
+    logging:
+      driver: journald
+    network_mode: host
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    ports:
+      - target: 8000
+        published: 8000
+        protocol: tcp
+        mode: host
+      - target: 6000
+        published: 6000
+        protocol: tcp
+        mode: host
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      update_config:
+        order: stop-first
+    init: true
+    working_dir: /app
+    command:
+      "uvicorn src.nimbus.main:app --host 0.0.0.0 --port 8000"
+  rqworker-default:
+    image: localhost:5000/tonybenoy/backend
+    stop_signal: SIGTERM
+    environment:
+      - config_env=local
+    logging:
+      driver: journald
+    network_mode: host
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      update_config:
+        order: stop-first
+    init: true
+    working_dir: /app
+    command:
+      rq worker --with-scheduler
+
+  redis:
+    image: docker pull redis:alpine3.12
+    container_name: backend-redis
+    ports:
+      - target: 6379
+        published: 6379
+    logging:
+      driver: journald
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager

@@ -43,6 +43,7 @@ setup(
         "starlette",
         "httpx",
         "email_validator",
+        "rq"
     ],
     extras_require={"dev": DEV_REQUIRES},
     include_package_data=True,
